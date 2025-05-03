@@ -2,11 +2,8 @@ repos:
 - repo: https://github.com/gitleaks/gitleaks
   rev: v8.18.2
   hooks:
-    - id: gitleaks
-      args: [
-        "--report-format=json",
-        "--report-path=gitleaks-report.json"
-      ]
+  - id: gitleaks
+    args: [ "--report-format=json", "--report-path=gitleaks-report.json" ]
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v2.3.0
   hooks:

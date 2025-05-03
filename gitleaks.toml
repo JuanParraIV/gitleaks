@@ -1,0 +1,6 @@
+[[rules]]
+id = "test-secret-asd123asd123"
+description = "Detect test secret ASd123asD123 in any file"
+regex = '''ASd123asD123'''
+secretGroup = 0
+tags = ["test", "custom"]
