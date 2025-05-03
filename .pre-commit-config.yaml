@@ -1,9 +1,19 @@
 repos:
 - repo: https://github.com/gitleaks/gitleaks
-  rev: v8.18.2 # Usa la última versión estable o la que prefieras
+  rev: v8.18.2
   hooks:
     - id: gitleaks
       args: [
         "--report-format=json",
         "--report-path=gitleaks-report.json"
       ]
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.3.0
+  hooks:
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+- repo: https://github.com/psf/black
+  rev: 22.10.0
+  hooks:
+  - id: black
