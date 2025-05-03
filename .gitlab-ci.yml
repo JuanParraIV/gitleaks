@@ -1,0 +1,16 @@
+stages:
+- secrets-scan
+
+gitleaks_scan:
+  image: zricethezav/gitleaks:latest
+  stage: secrets-scan
+  script:
+  - gitleaks detect --source=. --verbose --redact --report-path=gitleaks-report.json
+  artifacts:
+    paths:
+    - gitleaks-report.json
+    when: always
+  only:
+  - merge_requests
+  - main
+  - dev
