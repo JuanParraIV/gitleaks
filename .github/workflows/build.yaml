@@ -1,0 +1,48 @@
+name: Build and Test Frontend
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  # name of job, free choice, could also give a name
+  frontend-test:
+    # required to fix an issue we had when test result failed because
+    # checks: write and pull-requests: write were needed
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    #runners
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    strategy:
+      matrix:
+        node-version: [20.x]
+        architecture: [x64]
+    steps:
+      - name: Check-out git repository
+        uses: actions/checkout@v4
+
+      - name: USE NODEJS ${{ matrix.node-version }} - ${{ matrix.architecture }}
+        uses: actions/setup-node@v4
+
+
+    # test
+      - name: Install project dependencies
+        working-directory: ./frontend
+        run: |
+          npm i
+          npm run lint
+          npm install --save-dev --save-exact prettier
+          npm run prettier
+          npm test
+        env:
+          CI: true
+      # compile
+      - name: Build
+        run: npm run build
+        working-directory: ./frontend
