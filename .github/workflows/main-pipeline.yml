@@ -1,15 +1,14 @@
-name: 00 - Main CI / CD pipeline
-
+name: Main CI / CD pipeline
 on:
   push:
     branches: ["main"]
     paths-ignore:
-      - "**/*.md"
+      - "**/*.md" # Ignore documentation changes to avoid triggering the pipeline unnecessarily
       - "**/*.txt"
   workflow_dispatch:
 
-  jobs:
-    build:
-      name: Build
-      uses: ./.github/workflows/build.yml
-      secrets: inherit #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+    secrets: inherit # Inherits secrets from the calling workflow to the reusable workflow. See: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit
