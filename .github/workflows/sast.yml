@@ -16,28 +16,20 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'javascript' ]
-    defaults:
-      run:
-        working-directory: ./gitleaks/frontend
+    # Removed working-directory to align file paths
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Download node_modules artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: ./frontend/node_modules
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build (if needed)
-        run: npm run build || true
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -53,10 +45,10 @@ jobs:
       contents: read
       security-events: write
     container:
-      image: returntocorp/semgrep
+      image: returntocorp/semgrep:latest
     defaults:
       run:
-        working-directory: ./gitleaks/frontend
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
       - run: semgrep ci -v -o results.sarif --sarif || true
@@ -67,9 +59,9 @@ jobs:
         if: always()
         with:
           name: semgrep.sarif
-          path: ./gitleaks/frontend/results.sarif
+          path: ./frontend/results.sarif
       - name: Upload analysis results to GitHub Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ./gitleaks/frontend/results.sarif
+          sarif_file: ./frontend/results.sarif

@@ -25,3 +25,9 @@ jobs:
     name : Static Code Analysis
     uses: ./.github/workflows/sca.yml
     secrets: inherit
+
+  sast:
+    needs: build
+    name: Static Application Security Testing
+    uses: ./.github/workflows/sast.yml
+    secrets: inherit
