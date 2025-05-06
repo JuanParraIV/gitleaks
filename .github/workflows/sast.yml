@@ -51,6 +51,10 @@ jobs:
     defaults:
       run:
         working-directory: ./frontend
+    
+    # To skip any PR created by dependabot to avoid permission issues
+    if: (github.actor != 'dependabot[bot]')
+
     steps:
       - uses: actions/checkout@v4
       - run: semgrep ci -v -o results.sarif --sarif || true
@@ -67,3 +71,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ./frontend/results.sarif
+          
