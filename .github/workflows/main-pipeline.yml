@@ -32,3 +32,9 @@ jobs:
     name: Static Application Security Testing
     uses: ./.github/workflows/sast.yml
     secrets: inherit
+
+  license-compliance:
+    needs: build
+    name: License Compliance
+    uses: ./.github/workflows/license-compliance.yml
+    secrets: inherit
