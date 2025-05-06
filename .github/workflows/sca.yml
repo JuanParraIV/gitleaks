@@ -8,9 +8,7 @@ jobs:
   sca:
     permissions:
       contents: read
-      issues: read
-      checks: write
-      pull-requests: write
+      security-events: write
       
     runs-on: ubuntu-latest
     defaults:
