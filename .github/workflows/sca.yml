@@ -12,6 +12,11 @@ jobs:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@master
+      - name: Download node_modules artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: ./frontend/node_modules
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
