@@ -5,31 +5,15 @@ on:
   workflow_call:
 
 jobs:
-
   sca:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ "ubuntu-22.04" ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
-    name: SCA Frontend project
     steps:
-      - name: Checkout Action
-        uses: actions/checkout@master
+      - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
-        with:
-          args: --sarif-file-output=snyk.sarif
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2.21.2
-        with:
-          sarif_file: snyk.sarif
-      - name: Print SARIF analysis report
-        if: always()
-        run: cat snyk.sarif
