@@ -16,7 +16,9 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'javascript' ]
-    # Removed working-directory to align file paths
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
