@@ -1,0 +1,35 @@
+name: 30 License Compliance
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  license-finder:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download node_modules artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: ./frontend/node_modules
+
+      - name: License Finder
+        uses: jmservera/license-finder-action@main
+        with:
+          permitted-licenses: MIT,Apache-2.0,BSD
+          # Puedes agregar más licencias permitidas según tu política
+
+      - name: Upload License Finder Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-finder-report
+          path: ./frontend/license_finder_report.xml
