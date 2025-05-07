@@ -35,7 +35,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
 
@@ -49,20 +49,20 @@ jobs:
         run: snyk auth ${{ secrets.OUR_SNYK_KEY }}
 
       - name: Snyk Container monitor
-        run: snyk container monitor  ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }} --file=frontend/Dockerfile
+        run: snyk container monitor ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }} --file=frontend/Dockerfile
         working-directory: ./frontend
         continue-on-error: true
 
       - name: Run Snyk to check for vulnerabilities in the Docker image
         uses: snyk/actions/docker@master
         with:
-          image:  ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }}
+          image: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }}
           args: --file=frontend/Dockerfile --severity-threshold=high --sarif-file-output=snyk-results.sarif
         env:
           SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
         continue-on-error: true
 
       - name: Upload Snyk scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'snyk-results.sarif'
