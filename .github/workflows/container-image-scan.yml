@@ -56,12 +56,12 @@ jobs:
       - name: Run Snyk to check for vulnerabilities in the Docker image
         uses: snyk/actions/docker@master
         with:
-          image: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }}
+          image: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ env.FRONTEND_VERSION }}
           args: |
             --file=frontend/Dockerfile
             --severity-threshold=high
         env:
-          SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
       - name: Upload Snyk scan results to GitHub Security tab
