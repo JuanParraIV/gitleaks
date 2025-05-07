@@ -61,7 +61,7 @@ jobs:
             --file=frontend/Dockerfile
             --severity-threshold=high
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
         continue-on-error: true
 
       - name: Upload Snyk scan results to GitHub Security tab
