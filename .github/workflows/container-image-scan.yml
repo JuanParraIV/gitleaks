@@ -56,7 +56,7 @@ jobs:
       - name: Run Snyk to check for vulnerabilities in the Docker image
         uses: snyk/actions/docker@master
         with:
-          image: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE}}:${{ env.FRONTEND_VERSION }}
+          image: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ env.FRONTEND_VERSION }}
           args: |
             --file=frontend/Dockerfile
             --severity-threshold=high
