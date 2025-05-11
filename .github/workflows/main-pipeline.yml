@@ -50,3 +50,9 @@ jobs:
     name: Build docker image
     uses: ./.github/workflows/container-image-scan.yml
     secrets: inherit
+
+  dast:
+    needs: docker
+    name: Dynamic Application Security Testing
+    uses: ./.github/workflows/dast.yml
+    secrets: inherit
