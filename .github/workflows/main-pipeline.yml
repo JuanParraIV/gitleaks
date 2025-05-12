@@ -1,7 +1,6 @@
 name: Main CI / CD pipeline
 on:
   push:
-    branches: ["main"]
     paths-ignore:
       - "**/*.md" # Ignore documentation changes to avoid triggering the pipeline unnecessarily
       - "**/*.txt"
