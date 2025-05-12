@@ -1,132 +1,137 @@
-# GitLeaks
+# 🚀 DevSecOps Frontend Project: React + GitLeaks + OWASP ZAP
 
-Este repositorio tiene como propósito facilitar la integración de GitLeaks en cualquier proyecto para la detección automática de secretos y credenciales en el código fuente usando pre-commit hooks.
+¡Bienvenido! Este proyecto es una demostración real de cómo implemento prácticas DevSecOps modernas en el desarrollo frontend. Aquí combino React, automatización CI/CD, análisis de seguridad y buenas prácticas de ingeniería para entregar software seguro y de calidad.
 
-## Propósito
+---
 
-- Prevenir la exposición accidental de secretos (API keys, contraseñas, tokens, etc.) en repositorios de código.
-- Automatizar la configuración de GitLeaks y pre-commit en nuevos proyectos.
-- Proveer una base reutilizable para equipos DevSecOps y desarrolladores.
+## 🌟 ¿Por qué es relevante este proyecto?
 
-## How to use
+- **Automatización DevSecOps**: Seguridad integrada desde el primer commit hasta el despliegue.
+- **Stack moderno**: React + Vite + Docker + GitHub Actions.
+- **Pipeline completo**: Incluye SAST, DAST, SCA, escaneo de secretos y análisis de dependencias.
+- **Documentación clara**: Cada paso está explicado para facilitar la colaboración y la auditoría.
 
-1. **Clona este repositorio o copia la carpeta `gitleaks` y el script `setup_gitleaks.py` a tu nuevo proyecto.**
+---
 
-2. **Asegúrate de que el archivo `.pre-commit-config.yaml` esté dentro de la carpeta `gitleaks`.**
+## 🛠️ Tecnologías y Herramientas
 
-3. **Desde la raíz de tu proyecto, ejecuta:**
+- **Frontend**: React, Vite, Express
+- **Seguridad**: GitLeaks, OWASP ZAP, Snyk, Trivy, CodeQL, Semgrep
+- **CI/CD**: GitHub Actions
+- **Contenedores**: Docker
+- **Control de calidad**: ESLint, Prettier
+
+---
+
+## 📋 ¿Qué puedes ver en este repositorio?
+
+1. **Detección automática de secretos** con GitLeaks y pre-commit hooks.
+2. **Linter y formateo** con ESLint y Prettier.
+3. **Pruebas y build automatizado** con GitHub Actions.
+4. **Análisis de dependencias (SCA)** con Snyk y Dependency-Check.
+5. **Análisis de seguridad estática (SAST)** con CodeQL y Semgrep.
+6. **Verificación de licencias** de dependencias.
+7. **Construcción y publicación de la imagen Docker** del frontend.
+8. **Escaneo de vulnerabilidades en la imagen Docker** (Trivy, Snyk).
+9. **Escaneo de seguridad dinámica (DAST)** con OWASP ZAP.
+10. **Automatización de reportes y subida de artefactos** a GitHub.
+
+---
+
+## 🏗️ Estructura del Proyecto
+
+```
+gitleaks-report.json
+README.md
+setup_gitleaks.py
+frontend/
+  Dockerfile
+  package.json
+  server.js
+  src/
+    App.jsx
+    ...
+```
+
+---
+
+## 🚦 Pipeline DevSecOps: Workflows de GitHub Actions
+
+Este repositorio implementa un pipeline CI/CD completo y seguro, orquestado con GitHub Actions y dividido en workflows reutilizables y modulares:
+
+### 1. `build.yml` – Build y Test Frontend
+- Instala dependencias, ejecuta linter, formatea el código y corre pruebas.
+- Compila el frontend con Vite.
+- Sube `node_modules` como artefacto para acelerar otros jobs.
+
+### 2. `sca.yml` – Static Code Analysis (SCA)
+- Usa Snyk para escanear vulnerabilidades en dependencias y subir resultados en formato SARIF.
+- Ejecuta Dependency-Check para análisis adicional y sube reportes como artefactos.
+
+### 3. `sast.yml` – Static Application Security Testing (SAST)
+- Realiza análisis de seguridad estática con CodeQL (JavaScript).
+- Ejecuta Semgrep con reglas OWASP y de seguridad, subiendo resultados a la pestaña de Security de GitHub.
+
+### 4. `license-compliance.yml` – License Compliance
+- Usa License Finder para verificar que las dependencias cumplen con licencias permitidas (MIT, Apache-2.0, BSD).
+- Sube el reporte de licencias como artefacto.
+
+### 5. `docker.yml` – Build Docker Image
+- Construye y publica la imagen Docker del frontend en DockerHub.
+- Usa variables de entorno para el nombre y versión de la imagen.
+
+### 6. `container-image-scan.yml` – Scan Docker Image
+- Escanea la imagen Docker con Trivy y Snyk para detectar vulnerabilidades.
+- Sube los resultados a la pestaña de Security de GitHub.
+
+### 7. `dast.yml` – Dynamic Application Security Testing (DAST)
+- Despliega el frontend en un contenedor Docker.
+- Ejecuta un escaneo DAST con OWASP ZAP sobre la app en ejecución.
+- Permite la creación automática de issues si se detectan vulnerabilidades.
+- Sube el reporte HTML como artefacto.
+
+### 8. `main-pipeline.yml` – Orquestador Principal
+- Orquesta todos los workflows anteriores en el orden correcto:
+  1. Build
+  2. SCA
+  3. SAST
+  4. License Compliance
+  5. Docker Build
+  6. Container Image Scan
+  7. DAST
+- Permite ejecución manual (`workflow_dispatch`) y en cada push a `main` (ignorando cambios en archivos de documentación).
+
+---
+
+## 🚀 ¿Cómo probarlo?
 
 ```bash
+# 1. Instala dependencias y hooks de seguridad
 python3 setup_gitleaks.py
+
+# 2. Construye y ejecuta el frontend
+cd frontend
+docker build -t <usuario>/<nombre-imagen>:<versión> .
+docker run -p 3000:3000 <usuario>/<nombre-imagen>:<versión>
+
+# 3. Ejecuta el pipeline en GitHub Actions (push o PR)
 ```
 
-Esto hará lo siguiente:
-- Copiará el archivo de configuración de pre-commit con GitLeaks a tu proyecto.
-- Instalará pre-commit si no está instalado.
-- Activará el hook pre-commit para que GitLeaks analice tus commits automáticamente.
+---
 
-4. **Haz un commit normalmente.** Si GitLeaks detecta algún secreto, el commit será bloqueado y verás un reporte en consola.
+## 👨‍💻 Sobre mí
 
-## Requisitos
-- Python 3
-- pip
-- Acceso a internet para instalar pre-commit
+Soy Juan Parra IV, ingeniero DevSecOps apasionado por la automatización, la seguridad y el desarrollo frontend moderno. Este proyecto es una muestra real de mi enfoque profesional y mis habilidades técnicas.
 
-## Personalización
-Puedes modificar las reglas de GitLeaks editando el archivo `.pre-commit-config.yaml` según tus necesidades.
+- [LinkedIn](https://www.linkedin.com/in/juanparraiv)
+- [GitHub](https://github.com/JuanParraIV)
 
-## Más información
-- [GitLeaks](https://github.com/gitleaks/gitleaks)
-- [pre-commit](https://pre-commit.com/)
+---
 
-***
+## 📄 Licencia
 
-## Getting started
+MIT
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/juanparraiv-devsecops/gitleaks.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/juanparraiv-devsecops/gitleaks/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+> ¡Gracias por visitar mi proyecto! Si buscas un perfil que combine desarrollo frontend, seguridad y automatización, ¡hablemos!
